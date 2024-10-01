@@ -25,6 +25,7 @@ async function start(){
         console.log("server closing gracefully...");
         process.exit(0);
     })
+
 }
 
 start();

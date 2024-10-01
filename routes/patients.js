@@ -18,11 +18,19 @@ patientsRouter.get("/:user_id/Observations", async (req, res) =>{
 
 });
 
+patientsRouter.get("/:user_id/Conditions", async (req, res) =>{
+
+});
+
 patientsRouter.get("/:user_id/Encounters", async (req, res) =>{
 
 });
 
-patientsRouter.get("/:user_id/", async (req, res) =>{
+patientsRouter.get("/:user_id/AllergyIntolerances", async (req, res) =>{
+
+});
+
+patientsRouter.get("/:user_id/DiagnosticReports", async (req, res) =>{
 
 });
 
