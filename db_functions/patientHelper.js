@@ -1,6 +1,6 @@
 import {init, close} from "./connectionSingleton.js"
 
-async function getPatient(patient_id){
+async function getPatientByID(patient_id){
     let patient;
     try{
         
@@ -20,13 +20,13 @@ async function getPatient(patient_id){
     
 }
 
-async function getPatients(){
+async function getPatients(filter={}){
     let patients = null;
 
     try{
         const db = await init();
         const patientsCollection = db.collection("Patients");
-        patients = await patientsCollection.find({}).toArray();
+        patients = await patientsCollection.find(filter).toArray();
 
     }
     catch(error){
@@ -34,4 +34,4 @@ async function getPatients(){
     }
     return patients;
 }
-export {getPatient, getPatients}
+export {getPatientByID, getPatients}
