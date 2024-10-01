@@ -1,1 +1,1 @@
-import {init, close} from "./connectionSingleton.js"
+import {DataBaseSingleton} from "./connectionSingleton.js"

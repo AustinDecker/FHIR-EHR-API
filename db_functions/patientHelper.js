@@ -1,10 +1,10 @@
-import {init, close} from "./connectionSingleton.js"
+import {DataBaseSingleton } from "./connectionSingleton.js"
 
 async function getPatientByID(patient_id){
     let patient;
     try{
         
-        const db = await init();
+        const db = await DataBaseSingleton.init();
         const patientsCollection = db.collection("Patients");
 
         //find and return specific patient
@@ -24,7 +24,7 @@ async function getPatients(filter={}){
     let patients = null;
 
     try{
-        const db = await init();
+        const db = await DataBaseSingleton.init();
         const patientsCollection = db.collection("Patients");
         patients = await patientsCollection.find(filter).toArray();
 
