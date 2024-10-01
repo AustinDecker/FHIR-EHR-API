@@ -17,7 +17,6 @@ async function loadJson(directory, jsonFile){
 async function parseJsonObject(jsonObject){
     try {
         const entries = jsonObject.entry;
-        client = await DataBaseSingleton.init();
 
         // Insert entries into their respective collections
         for (const entry of entries) {
