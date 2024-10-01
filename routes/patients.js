@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {getPatients, getPatientBYID} from "../db_functions/patientHelper.js"
+import {getPatients, getPatientByID} from "../db_functions/patientHelper.js"
 
 const patientsRouter = Router();
 
