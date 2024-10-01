@@ -1,4 +1,4 @@
-import {DataBaseSingleton } from "./connectionSingleton.js"
+import { DataBaseSingleton } from "./connectionSingleton.js"
 
 async function getPatientByID(patient_id){
     let patient;
