@@ -1,11 +1,11 @@
 import { Router } from "express";
-import {getPatients, getPatientByID} from "../db_functions/patientHelper.js"
+import {getPatients, getPatientByID} from "../db_functions/patientHelper.js";
 
 const patientsRouter = Router();
 
 patientsRouter.get("/", async (req, res) => {
-    const patients = await getPatients()
-    res.status(200).json(patients)
+    const patients = await getPatients();
+    res.status(200).json(patients);
 });
 
 patientsRouter.get("/:user_id", async (req, res) =>{
@@ -34,4 +34,4 @@ patientsRouter.get("/:user_id/DiagnosticReports", async (req, res) =>{
 
 });
 
-export {patientsRouter}
+export {patientsRouter};
