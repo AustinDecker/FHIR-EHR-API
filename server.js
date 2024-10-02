@@ -1,7 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 import { patientsRouter } from "./routes/patients.js";
-import {DataBaseSingleton} from "./db_functions/connectionSingleton.js"
+import { observationsRouter } from "./routes/observations.js";
+import {DataBaseSingleton} from "./db_functions/connectionSingleton.js";
 
 dotenv.config({path: "./.env"})
 
@@ -9,10 +10,11 @@ const app = express();
 const PORT = process.env.SERVER_PORT || "8080";
 
 //middleware
-app.use(express.json())
+app.use(express.json());
 
 //routes
 app.use("/patients", patientsRouter);
+app.use("/observations", observationsRouter);
 
 async function start(){
     await DataBaseSingleton.init();
@@ -27,5 +29,4 @@ async function start(){
     })
 
 }
-
 start();
