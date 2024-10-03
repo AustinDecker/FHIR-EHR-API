@@ -1,5 +1,39 @@
 import {DataBaseSingleton} from "./connectionSingleton.js"
 
+
+async function getObservationByID(observationID){
+    let observation = null;
+    try {
+        const db = await DataBaseSingleton.init();
+        const observationsCollection = db.collection("Observations");
+        observation = observationsCollection.findOne({id: observationID});
+
+    } catch (error) {
+        console.error(`ERROR: ${error.message}`);
+    } finally {
+        return observation;
+    }
+}
+
+async function getObservations(page=1, amount=100, filter={}){
+    let observations = {}
+
+    try {
+        const db = await DataBaseSingleton.init();
+        const observationsCollection = db.collection("Observations");
+        observations = observationsCollection.find(filter, {
+            limit: amount,
+            skip: ((page -1) * amount)
+
+        }).toArray();
+    } catch (error) {
+        console.error(`ERROR: ${error.message}`)
+    } finally {
+        return observations;
+    }
+}
+
+export {getObservationByID, getObservations}
 /*
 example usage
 results = queryObservations(patientID, {
