@@ -20,13 +20,17 @@ async function getPatientByID(patient_id){
     
 }
 
-async function getPatients(filter={}){
+async function getPatients(page=1, amount=100, filter={}){
     let patients = null;
 
     try{
         const db = await DataBaseSingleton.init();
         const patientsCollection = db.collection("Patients");
-        patients = await patientsCollection.find(filter).toArray();
+        patients = await patientsCollection.find(filter,  {
+            limit: amount,
+            skip: ((page -1) * amount)
+
+        }).toArray();
 
     }
     catch(error){
