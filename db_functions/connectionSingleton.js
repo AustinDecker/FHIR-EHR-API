@@ -81,6 +81,7 @@ async function DatabaseConnectionPool(connections){
                 else{
                     activeConnections.push(conn);
                 }
+                activeConnCount++;
             }
         },
 
