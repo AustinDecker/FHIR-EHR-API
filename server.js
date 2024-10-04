@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import { patientsRouter } from "./routes/patients.js";
 import { observationsRouter } from "./routes/observations.js";
-import {DataBaseSingleton} from "./db_functions/connectionSingleton.js";
+import {getDatabaseConnectionPool, closeDatabaseConnectionPool} from "./db_functions/connectionSingleton.js";
 
 dotenv.config({path: "./.env"})
 
@@ -17,13 +17,13 @@ app.use("/patients", patientsRouter);
 app.use("/observations", observationsRouter);
 
 async function start(){
-    await DataBaseSingleton.init();
+    await getDatabaseConnectionPool();
     app.listen(PORT, () =>{
         console.log(`API Server Listening on Port ${PORT}`);
     });
 
     process.on("SIGINT", async ()=>{
-        await DataBaseSingleton.close();
+        await closeDatabaseConnectionPool();
         console.log("server closing gracefully...");
         process.exit(0);
     })

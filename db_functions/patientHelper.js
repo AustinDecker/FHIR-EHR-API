@@ -1,10 +1,13 @@
-import { DataBaseSingleton } from "./connectionSingleton.js"
+import { getDatabaseConnectionPool } from "./connectionSingleton.js"
 
 async function getPatientByID(patient_id){
     let patient;
     try{
         
-        const db = await DataBaseSingleton.init();
+        const connectionPool = await getDatabaseConnectionPool();
+        const connection = await connectionPool.getConnection();
+        const db = connection.db("dev");
+
         const patientsCollection = db.collection("Patients");
 
         //find and return specific patient
@@ -15,6 +18,7 @@ async function getPatientByID(patient_id){
         console.error("error trying to access database", err);
     }
     finally{
+        connectionPool.returnConnection(connection);
         return patient;
     }
     
@@ -24,8 +28,12 @@ async function getPatients(page=1, amount=100, filter={}){
     let patients = null;
 
     try{
-        const db = await DataBaseSingleton.init();
+        const connectionPool = await getDatabaseConnectionPool();
+        const connection = await connectionPool.getConnection();
+        const db = connection.db("dev");
+
         const patientsCollection = db.collection("Patients");
+
         patients = await patientsCollection.find(filter,  {
             limit: amount,
             skip: ((page -1) * amount)
@@ -36,6 +44,8 @@ async function getPatients(page=1, amount=100, filter={}){
     catch(error){
         console.error("error trying to access database", error);
     }
+    
+    connectionPool.returnConnection(connection);
     return patients;
 }
 export {getPatientByID, getPatients}

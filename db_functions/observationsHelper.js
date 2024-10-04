@@ -1,10 +1,13 @@
-import {DataBaseSingleton} from "./connectionSingleton.js"
+import {getDatabaseConnectionPool} from "./connectionSingleton.js"
 
 
 async function getObservationByID(observationID){
     let observation = null;
     try {
-        const db = await DataBaseSingleton.init();
+        const connectionPool = await getDatabaseConnectionPool();
+        const connection = await connectionPool.getConnection();
+        const db = connection.db("dev");
+
         const observationsCollection = db.collection("Observations");
         observation = observationsCollection.findOne({id: observationID});
 
@@ -19,7 +22,10 @@ async function getObservations(page=1, amount=100, filter={}){
     let observations = {}
 
     try {
-        const db = await DataBaseSingleton.init();
+        const connectionPool = await getDatabaseConnectionPool();
+        const connection = await connectionPool.getConnection();
+        const db = connection.db("dev");
+
         const observationsCollection = db.collection("Observations");
         observations = observationsCollection.find(filter, {
             limit: amount,
@@ -29,6 +35,7 @@ async function getObservations(page=1, amount=100, filter={}){
     } catch (error) {
         console.error(`ERROR: ${error.message}`)
     } finally {
+        
         return observations;
     }
 }
