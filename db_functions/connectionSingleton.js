@@ -72,9 +72,9 @@ async function DatabaseConnectionPool(connections){
 
             let activeConnCount = 0; 
             let totalActiveConnectionsCount = activeConnections.length;
-            let conn = activeConnections.pop();
 
             while(conn !== undefined && activeConnCount < totalActiveConnectionsCount){
+            let conn = activeConnections.pop();
                 if (conn === finishedConn){
                     inactiveConnections.push(conn)
                 }
