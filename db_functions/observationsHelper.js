@@ -1,38 +1,33 @@
-import {getDatabaseConnectionPool} from "./connectionSingleton.js"
+import {DataBaseSingleton} from "./connectionSingleton.js"
 
 
 async function getObservationByID(observationID){
     let observation = null;
-    let connectionPool = null;
     let connection = null;
 
     try {
-        const connectionPool = await getDatabaseConnectionPool();
-        const connection = await connectionPool.getConnection();
+        
+        const connection = await DataBaseSingleton.init();
         const db = connection.db("dev");
 
         const observationsCollection = db.collection("Observations");
         observation = observationsCollection.findOne({id: observationID});
 
-    } catch (error) {
+    } 
+    catch (error) {
         console.error(`ERROR: ${error.message}`);
-    } finally {
-
-        if(connectionPool){
-            connectionPool.returnConnection(connection)
-        }
+    } 
+    finally {
         return observation;
     }
 }
 
 async function getObservations(page=1, amount=100, filter={}){
     let observations = {};
-    let connectionPool = null;
     let connection = null;
 
     try {
-        const connectionPool = await getDatabaseConnectionPool();
-        const connection = await connectionPool.getConnection();
+        const connection = await DataBaseSingleton.init();
         const db = connection.db("dev");
 
         const observationsCollection = db.collection("Observations");
@@ -41,13 +36,11 @@ async function getObservations(page=1, amount=100, filter={}){
             skip: ((page -1) * amount)
 
         }).toArray();
-    } catch (error) {
+    } 
+    catch (error) {
         console.error(`ERROR: ${error.message}`)
-    } finally {
-
-        if(connectionPool){
-            connectionPool.returnConnection(connection)
-        }
+    } 
+    finally {
         return observations;
     }
 }
