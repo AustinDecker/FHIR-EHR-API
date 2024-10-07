@@ -3,6 +3,9 @@ import {getDatabaseConnectionPool} from "./connectionSingleton.js"
 
 async function getObservationByID(observationID){
     let observation = null;
+    let connectionPool = null;
+    let connection = null;
+
     try {
         const connectionPool = await getDatabaseConnectionPool();
         const connection = await connectionPool.getConnection();
@@ -14,12 +17,18 @@ async function getObservationByID(observationID){
     } catch (error) {
         console.error(`ERROR: ${error.message}`);
     } finally {
+
+        if(connectionPool){
+            connectionPool.returnConnection(connection)
+        }
         return observation;
     }
 }
 
 async function getObservations(page=1, amount=100, filter={}){
-    let observations = {}
+    let observations = {};
+    let connectionPool = null;
+    let connection = null;
 
     try {
         const connectionPool = await getDatabaseConnectionPool();
@@ -35,7 +44,10 @@ async function getObservations(page=1, amount=100, filter={}){
     } catch (error) {
         console.error(`ERROR: ${error.message}`)
     } finally {
-        
+
+        if(connectionPool){
+            connectionPool.returnConnection(connection)
+        }
         return observations;
     }
 }
