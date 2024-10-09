@@ -3,32 +3,44 @@ import {DataBaseSingleton} from "./connectionSingleton.js"
 
 async function getObservationByID(observationID){
     let observation = null;
+    let connection = null;
+
     try {
-        const db = await DataBaseSingleton.init();
+        
+        const connection = await DataBaseSingleton.init();
+        const db = connection.db("dev");
+
         const observationsCollection = db.collection("Observations");
         observation = observationsCollection.findOne({id: observationID});
 
-    } catch (error) {
+    } 
+    catch (error) {
         console.error(`ERROR: ${error.message}`);
-    } finally {
+    } 
+    finally {
         return observation;
     }
 }
 
 async function getObservations(page=1, amount=100, filter={}){
-    let observations = {}
+    let observations = {};
+    let connection = null;
 
     try {
-        const db = await DataBaseSingleton.init();
+        const connection = await DataBaseSingleton.init();
+        const db = connection.db("dev");
+
         const observationsCollection = db.collection("Observations");
         observations = observationsCollection.find(filter, {
             limit: amount,
             skip: ((page -1) * amount)
 
         }).toArray();
-    } catch (error) {
+    } 
+    catch (error) {
         console.error(`ERROR: ${error.message}`)
-    } finally {
+    } 
+    finally {
         return observations;
     }
 }

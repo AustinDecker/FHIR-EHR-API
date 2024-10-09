@@ -1,25 +1,23 @@
 import { MongoClient } from "mongodb";
 
+
 let client;
-let db;
-export const DataBaseSingleton = {
+const DataBaseSingleton = {
     init: async function(){
         if(!client){
-            client = new MongoClient(process.env.MONGO_DB);     
+
+            client = await MongoClient.connect(process.env.MONGO_DB, {maxPoolSize: 10});     
         }
-    
-        if(!db){
-            await client.connect();
-            db = client.db("dev");
-        }
-        return db;
+        return client;
     },
 
     close: async function(){
         if(client){
             await client.close();
             client = null;
-            db = null;
         }
     }
 };
+
+
+export {DataBaseSingleton};
